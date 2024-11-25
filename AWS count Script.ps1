@@ -32,27 +32,30 @@ foreach ($region in $regions) {
         $instances = & $resource.Command -Region $region
 
       $count = 0
+
+       if ($resource.Name -eq "EC2Instance") {
+          $count = $instances.Count
+       }
+
+           elseif ($resource.Name -eq "RDSInstance") {
+               $count = $instances.Count
+           } 
         
-       if ($resource.Name -eq "DynamoDB") {
-            $count = $instances.Count
-        }
+           elseif ($resource.Name -eq "DynamoDB") {
+                $count = $instances.Count
+            }
         
-        elseif ($resource.Name -eq "LambdaFunctions") {
-            
-            $count = ($instances | Measure-Object).Count
-        } 
+            elseif ($resource.Name -eq "LambdaFunctions") {
+                $count = ($instances | Measure-Object).Count
+            }     
         
-        elseif ($resource.Name -eq "APIGateway-REST") {
-            
-            $count = ($instances.Name | Measure-Object).Count
-        } 
+            elseif ($resource.Name -eq "APIGateway-REST") {
+                $count = ($instances.Name | Measure-Object).Count
+            } 
         
-        elseif ($resource.Name -eq "APIGatewayV2") {
-            
-            $count = ($instances.Name | Measure-Object).Count
-        } else {
-            # rds and ec2 
-            $count = ($instances.Instances | Measure-Object).Count
+            else ($resource.Name -eq "APIGatewayV2") {
+                $count = ($instances.Name | Measure-Object).Count
+            } 
         }
         
         # adjusted = count/ ratio
@@ -75,8 +78,6 @@ foreach ($region in $regions) {
     }
 }
 $results
-
-
 
 $results | Export-Csv -Path $csvFilePath -NoTypeInformation
 $jsonOutput = $results | ConvertTo-Json -Depth 3

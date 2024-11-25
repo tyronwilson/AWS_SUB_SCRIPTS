@@ -34,15 +34,15 @@ foreach ($region in $regions) {
       $count = 0
 
        if ($resource.Name -eq "EC2Instance") {
-          $count = $instances.Count
+          $count =($instances.Name | Measure-Object).Count
        }
 
            elseif ($resource.Name -eq "RDSInstance") {
-               $count = $instances.Count
+               $count = ($instances.Name | Measure-Object).Count
            } 
         
            elseif ($resource.Name -eq "DynamoDB") {
-                $count = $instances.Count
+                $count = ($instances.Name | Measure-Object).Count
             }
         
             elseif ($resource.Name -eq "LambdaFunctions") {
